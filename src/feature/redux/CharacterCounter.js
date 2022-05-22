@@ -1,19 +1,23 @@
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useDispatch, useSelector } from "react-redux";
 import CharacterCount from "../../components/CharacterCount";
 import TextInput from "../../components/TextInput";
 import { default as CharacterCounterUI } from "../../components/CharacterCounter";
-import { textState, charCountState } from "./store";
+import { textEdited } from "./text.slice";
 
-console.log("\n*** RECOIL ***\n");
+console.log("\n*** REDUX ***\n");
 
 function CharacterCounter() {
-  const [text, setText] = useRecoilState(textState);
-  const charCount = useRecoilValue(charCountState);
+  const text = useSelector((state) => state.text.value);
+  const charCount = text.length;
+  const dispatch = useDispatch();
 
   return (
     <CharacterCounterUI
       TextInputComponent={
-        <TextInput text={text} onChange={(value) => setText(value)} />
+        <TextInput
+          text={text}
+          onChange={(value) => dispatch(textEdited(value))}
+        />
       }
       CharacterCountComponent={<CharacterCount count={charCount} />}
     />
